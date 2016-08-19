@@ -76,10 +76,7 @@ public class TransactionAccessor {
 			catch (SQLException e) {
 				System.out.println(e.getMessage());
 			}
-			/*
-			 * catch(ClassNotFoundException e) { System.out.println(e.getMessage());
-			 * }
-			 */
+
 			catch (Exception e) {
 				System.out.println(e.getMessage());
 			} finally {
@@ -153,7 +150,7 @@ public class TransactionAccessor {
 				setChipsQuantityId(8);
 			}
 		}
-		
+		// when user want to pay first time check if he have payment details already
 		public int searchPaymentDetails(TransactionHistory userId){
 			int count = 0;
 					

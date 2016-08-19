@@ -1,5 +1,6 @@
 package server;
 
+import Accessors.GameTransactionEccessor;
 import jdk.nashorn.internal.ir.ContinueNode;
 
 public class RouletaTable {
@@ -9,13 +10,21 @@ public class RouletaTable {
 	private String gameResault;   //win or lose
 	//private String colorGamble ;
 	private int gambelNumber;
-	private int userWiningAmount;
+	private int Amount;
 	private int winningNumber;
-	private int userLosingAmount;
 	private String GambleOption;
 	private ScannerManager scanner;
 	private int balance;
+	private String gametype;
 	
+	public String getGametype() {
+		return gametype;
+	}
+
+	public void setGameType(String gametype) {
+		this.gametype = gametype;
+	}
+
 	public int getBalance() {
 		return balance;
 	}
@@ -42,18 +51,13 @@ public class RouletaTable {
 	public void setWiningNumber(int winingNumber) {
 		this.winningNumber = winingNumber;
 	}
-	public int getUserWiningAmount() {
-		return userWiningAmount;
+	public int getAmount() {
+		return Amount;
 	}
-	public void setUserWiningAmount(int userWiningAmount) {
-		this.userWiningAmount = userWiningAmount;
+	public void setAmount(int Amount) {
+		this.Amount = Amount;
 	}
-	public int getUserLosingAmount() {
-		return userLosingAmount;
-	}
-	public void setUserLosingAmount(int userLosingAmount) {
-		this.userLosingAmount = userLosingAmount;
-	}
+
 	public int getGamblNumber() {
 		return gambelNumber;
 	}
@@ -136,17 +140,24 @@ public class RouletaTable {
 				String win = "win";
 				setGameResault(win);
 				int winningPrise = gambleAmount*4;
-				setUserWiningAmount(winningPrise);
+				setAmount(winningPrise);
 				System.out.println("You Won!! Congradulation!! your winning amount is " + winningPrise + " dollar. Luky you!");
 				setBalance(balance + winningPrise);
+				GameTransactionEccessor gameTransactionEccessor = new GameTransactionEccessor();
+				gameTransactionEccessor.saveTranHistory(this);
+				startGame();
 				
 			}
 		
 	    	else{
 	    		System.out.println("The winning number is " + this.winningNumber + " your loss is "
 	    				+ gambleAmount + " dollar");
-	    		setUserLosingAmount(gambleAmount);
+	    		setAmount(gambleAmount);
 	    		setBalance(balance - gambleAmount);
+	    		String lose = "lose";
+				setGameResault(lose);
+	    		GameTransactionEccessor gameTransactionEccessor = new GameTransactionEccessor();
+				gameTransactionEccessor.saveTranHistory(this);
 	    		startGame();
 				
 

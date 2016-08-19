@@ -13,20 +13,12 @@ public class CasinoManager
 	int userSelection;  
 	private Users user ;   
 	private ScannerManager scannerManager;
-	private String GameType;
+	private String gameType;
 	
 	public CasinoManager()    
 	{
 		user = new Users();   //member of game manager class for the ability to get the user id for all the class
 		scannerManager = new ScannerManager();
-	}
-	
-	public String getGameType() {
-		return GameType;
-	}
-
-	public void setGameType(String gameType) {
-		GameType = gameType;
 	}
 	
 	public void Start()
@@ -43,14 +35,13 @@ public class CasinoManager
 			
 			else if (userSelection == 2) {
 
-				signUp();
+				signUp(); // need to check if user already exists
 				System.out.println("Enter your new login details: ");
 				signIn();
 				
 				TransactionHistory Transaction = new TransactionHistory();
 				Transaction.setTransactionAmount(user.getUserBalance()); //we can create trigger to set value to 100 when insert newuser
 				Transaction.setUserID(user.getUserId());
-				
 				Transaction.setTransactionType(Transaction.TransactionTypeList[0]);
 				Transaction.setActionType(Transaction.actionTypeList[0]);
 				Transaction.setChipsQuantity(Transaction.chipsQuantityList[5]);
@@ -84,10 +75,11 @@ public class CasinoManager
 			if (mainMenu == 1)
 			{
 				String gameType = scannerManager.getStringValueFromUser("Which game would you like to play? Enter r for rouleta: ");
-				setGameType(gameType);
 				
-				if (getGameType().equals("r")){
+				
+				if (gameType.equals("r")){
 					RouletaTable rouletaTable = new RouletaTable();
+					rouletaTable.setGameType(gameType);
 					rouletaTable.setPlayerId(this.user.getUserId());
 					rouletaTable.setBalance(user.getUserBalance());
 					rouletaTable.startGame();
