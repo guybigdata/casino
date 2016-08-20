@@ -161,14 +161,15 @@ public class TransactionAccessor {
 
 				connect = DriverManager.getConnection(connectionStringMysql.getMysqlConnection());
 
-				preparedStatement = connect.prepareStatement("SELECT COUNT(UserId) FROM casino.Payment_Details  WHERE User_ID =" + userId.getUserID());
+				preparedStatement = connect.prepareStatement("SELECT COUNT(*) FROM casino.CreditCards WHERE UserId =" + userId.getUserID()+" ");
 
 				resultSet = preparedStatement.executeQuery();
 		
 				if (resultSet != null)
 				{
 					resultSet.next();
-					count = resultSet.getInt("UserID");
+					count = resultSet.getInt("COUNT(*)");
+					
 				}
 
 				

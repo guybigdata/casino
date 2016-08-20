@@ -1,18 +1,36 @@
 package server;
 
+import java.time.LocalDate;
+import java.util.Calendar;
+
 import Accessors.UsersDetailsAccessor;
 
 public class  UsersDetails
 {
 	private int userId;
+	private String firstName;
+	private String lastName;
+	private String gender;
+	private String phoneNumber;
+	private String street;
+	private String city;
+	private String country;
+	private String email;
+	private LocalDate birthDate ;
+	private int cityID;
+	
+
+
+	public void setCityID(int cityID) {
+		this.cityID = cityID;
+	}
 	public int getUserId() {
 		return userId;
 	}
 	public void setuserId(int userId) {
 		this.userId = userId;
 	}
-	private String firstName;
-	private String lastName;
+	
 	public String getLastName() {
 		return lastName;
 	}
@@ -20,7 +38,7 @@ public class  UsersDetails
 		this.lastName = lastName;
 	}
 
-	private String gender;
+	
 	public String getGender() {
 		return gender;
 	}
@@ -28,7 +46,7 @@ public class  UsersDetails
 		this.gender = gender;
 	}
 
-	private String phoneNumber;
+	
 	public String getPhoneNumber() {
 		return phoneNumber;
 	}
@@ -36,15 +54,16 @@ public class  UsersDetails
 		this.phoneNumber = phoneNumber;
 	}
 
-	private String address;
-	public String getAddress() {
-		return address;
+	
+	public String getStreet() {
+		return street;
 	}
-	public void setAddress(String address) {
-		this.address = address;
+	
+	public void setStreet(String street){
+		this.street = street;
 	}
 
-	private String city;
+	
 	public String getCity() {
 		return city;
 	}
@@ -52,7 +71,7 @@ public class  UsersDetails
 		this.city = city;
 	}
 
-	private String country;
+	
 	public String getCountry() {
 		return country;
 	}
@@ -60,7 +79,7 @@ public class  UsersDetails
 		this.country = country;
 	}
 
-	private String email;
+	
 	public String getEmail() {
 		return email;
 	}
@@ -68,12 +87,10 @@ public class  UsersDetails
 		this.email = email;
 	}
 
-	private String birthDate ;
-	
-	public String getBirthDate() {
+	public LocalDate getBirthDate() {
 		return birthDate;
 	}
-	public void setBirthDate(String birthDate) {
+	public void setBirthDate(LocalDate birthDate) {
 		this.birthDate = birthDate;
 	}
 	public String getFirstName() {
@@ -86,7 +103,37 @@ public class  UsersDetails
 	public void save(){
 		UsersDetailsAccessor saveToDb = new UsersDetailsAccessor();
 		saveToDb.saveDetails(this);
-		
-		
 	}
-	}
+	
+//	  public Calendar calendarFor(int year, int month, int day) {
+//	        Calendar cal = Calendar.getInstance();
+//	        cal.set(Calendar.YEAR, year);
+//	        cal.set(Calendar.MONTH, month);
+//	        cal.set(Calendar.DAY_OF_MONTH, day);
+//	        return cal;
+//	    }
+	  public boolean getCountryID(){
+		  UsersDetailsAccessor Accessor = new UsersDetailsAccessor();
+		  String countryCode = Accessor.getCountryId(this);
+		  if (countryCode != null){
+			  setCountry(countryCode);
+			  return true;
+		  }else{
+			  return false;
+		  }
+		  
+	  }
+	  
+	  public boolean getCityID(){
+		  UsersDetailsAccessor Accessor = new UsersDetailsAccessor();
+		  int cityID = Accessor.getCityID(this);
+		  if (cityID != 0){
+			  setCityID(cityID);
+			  return true;
+		  }
+		  else{
+			  return false;
+		  }
+		  
+	  }
+}

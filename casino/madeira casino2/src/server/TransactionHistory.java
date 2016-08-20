@@ -63,7 +63,9 @@ public class TransactionHistory {
 	public boolean ifPaymentDetailsExists() {
 
 		int IdExists = TransactionAccessor.searchPaymentDetails(this);
-		if (IdExists >= 1){
+		
+		
+		if (IdExists != 0){
 			return true;
 		}else{
 			return false;

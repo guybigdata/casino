@@ -4,6 +4,10 @@ import server.TransactionHistory;
 import server.ScannerManager;
 import server.UsersDetails;
 import server.Users;
+
+import java.time.LocalDate;
+import java.util.Calendar;
+
 import server.PaymentDetails;
 import server.RouletaTable;
 
@@ -67,14 +71,16 @@ public class CasinoManager
 	public void gameZone() {
 
 		System.out.println("welcome to the game zone");
-		int mainMenu = scannerManager.getIntValueFromUser("To play Enter 1:\nTo buy chips Enter 2:"
+		int mainMenu = scannerManager.getIntValueFromUser("To play Enter 1:"
+				+ "\nTo buy chips Enter 2:"
 				+ "\nGo to your 'game zone reports' Enter 3 ");
 
 		while (mainMenu != 3) 
 		{	
 			if (mainMenu == 1)
 			{
-				String gameType = scannerManager.getStringValueFromUser("Which game would you like to play? Enter r for rouleta: ");
+				String gameType = scannerManager.getStringValueFromUser("Which game would you "
+						+ "like to play? Enter r for rouleta: ");
 				
 				
 				if (gameType.equals("r")){
@@ -86,111 +92,95 @@ public class CasinoManager
 					user.setUserBalance(rouletaTable.getBalance());
 					user.updateUserBalance();
 					gameZone();
-				}	
-				else{
+					
+				}else{
 						System.out.println("More games will comming soon, please enter 'r':");
-						
-						
 				}
-				
-				
-				
-
-				
 			}
-			if (mainMenu == 2) 
-			{
-			TransactionHistory Transaction = new TransactionHistory();
-			Transaction.setUserID(user.getUserId());
-			boolean numOfUserId = Transaction.ifPaymentDetailsExists();
-			if (numOfUserId == true){
-				int chipsAmount = scannerManager.getIntValueFromUser("Welcome to the cash desk, Enter how much chips you wish to purchase  (please Enter 10,20,30,40 or 50)?"); 
-				String confirmCharge = scannerManager.getStringValueFromUser("Your account will charge in amount of " + chipsAmount + " dollar. are yoy confirm (yes/no)");
-				if (confirmCharge.equals("yes")){
-					System.out.print("In progress...");
-					System.out.print(".");System.out.print(".");System.out.print(".");System.out.print(".");System.out.print(".");System.out.print(".");System.out.print(".");System.out.print(".");System.out.print(".");
-					
-					try {
-						Thread.sleep(3000);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					} 
-					
-			  
-				    user.setUserBalance(chipsAmount + user.getUserBalance());
+			if (mainMenu == 2){ //if the user want to buy chips before playing first time
+				//need to update balance
+			
+				TransactionHistory Transaction = new TransactionHistory();
+				Transaction.setUserID(user.getUserId());
+				boolean numOfUserId = Transaction.ifPaymentDetailsExists();
+				
+				if (numOfUserId == true){
+					int chipsAmount = scannerManager.getIntValueFromUser("Welcome to the cash desk,"
+							+ " Enter how much chips you wish to purchase  (please Enter 10,20,30,40 or 50)?"); 
+					String confirmCharge = scannerManager.getStringValueFromUser("Your account will"
+							+ " charge in amount of " + chipsAmount + " dollar. "
+									+ "are yoy confirm (yes/no)");
+					if (confirmCharge.equals("yes")){
+						System.out.print("In progress...");
+						System.out.print(".");System.out.print(".");System.out.print(".");System.out.print(".");System.out.print(".");System.out.print(".");System.out.print(".");System.out.print(".");System.out.print(".");
+					}else{
+							mainMenu = 2;
+						}
+				}else{
+				        UsersDetails userDetails = new UsersDetails();
+				        
+						System.out.println("Payment method:\nPlease fill in the next filds ");
+						String firstName = scannerManager.getStringValueFromUser("first name :");
+						userDetails.setFirstName(firstName);
+						String lastName = scannerManager.getStringValueFromUser("Last name :");
+						userDetails.setLastName(lastName);
+						String gender = scannerManager.getStringValueFromUser("Gender : 'M' for male ,'F' for femail:");
+						userDetails.setGender(gender.toUpperCase());
+						String phoneNumber = scannerManager.getStringValueFromUser("Phone Number :");
+						userDetails.setPhoneNumber(phoneNumber);
+						System.out.println("Address:");
+						String street = scannerManager.getStringValueFromUser("Street : ");
+						String streetNumber = scannerManager.getStringValueFromUser("Street number : ");
+						userDetails.setStreet(street+ " "+ streetNumber);
+						String city = scannerManager.getStringValueFromUser("City :");
+						userDetails.setCity(city);
+						boolean isCityIdExists = userDetails.getCityID();
+						if (isCityIdExists == true){
+						
+								String country = scannerManager.getStringValueFromUser("Country :");
+								userDetails.setCountry(country);
+								boolean isCountryExists = userDetails.getCountryID();
+								if (isCountryExists == true){
+								
+									String email = scannerManager.getStringValueFromUser("Email address :");
+									userDetails.setEmail(email);
+									int year = scannerManager.getIntValueFromUser("Year of birth 'YYYY':");
+									int month = scannerManager.getIntValueFromUser("Month of birth 'MM':");
+									int day = scannerManager.getIntValueFromUser("Day of birth 'DD':");
+									LocalDate birthDate = LocalDate.of(year,month,day);
+									userDetails.setBirthDate(birthDate);
+													
+									userDetails.setuserId(user.getUserId());
+									userDetails.save();
 									
-				}
+									PaymentDetails newPaymentMethod = new PaymentDetails();
 				
-			}
-
-			UsersDetails newUserDetails = new UsersDetails();
-			
-			
-					// step 1 - check if its the first time buying chips and
-					// need to enter payment method details
-					// step 2 - need to do a select query on the payment method
-					// for this user to check if details exists
-					// step 3 - insert the transaction details
-					// step 4 - update the balance
-				
-				
-
-					System.out.println("Payment method: ");
-
-					String firstName = scannerManager.getStringValueFromUser("first name :");
-					newUserDetails.setFirstName(firstName);
-
-					String lastName = scannerManager.getStringValueFromUser("Last name :");
-					newUserDetails.setLastName(lastName);
-					String gender = scannerManager.getStringValueFromUser("Gender (for male Enter 'M' for femail 'F' :");
-					newUserDetails.setGender(gender);
-					String phoneNumber = scannerManager.getStringValueFromUser("Phone Number :");
-					newUserDetails.setPhoneNumber(phoneNumber);
-					String address = scannerManager.getStringValueFromUser("Address (street name, street number) :");
-					newUserDetails.setAddress(address);
-					String city = scannerManager.getStringValueFromUser("City :");
-					newUserDetails.setCity(city);
-					String country = scannerManager.getStringValueFromUser("Country :");
-					newUserDetails.setCountry(country);
-					String email = scannerManager.getStringValueFromUser("Email address :");
-					newUserDetails.setEmail(email);
-					String birthDate = scannerManager.getStringValueFromUser("Birth Date YYYY/MM/DD:");
-					newUserDetails.setBirthDate(birthDate);
-					
-					newUserDetails.setuserId(user.getUserId());
-					newUserDetails.save();
-					
-					PaymentDetails newPaymentMethod = new PaymentDetails();
-
-					String socialSec = scannerManager.getStringValueFromUser("Socialsec :");
-					newPaymentMethod.setSocialsec(socialSec);
-
-					String ownerFirstName = scannerManager.getStringValueFromUser("firstName : ");
-					newPaymentMethod.setFirstName(ownerFirstName);
-					
-					String ownerLastName = scannerManager.getStringValueFromUser("lastName : ");
-					newPaymentMethod.setLastName(ownerLastName);
-	
-					String ccType = scannerManager.getStringValueFromUser(" cc Type: \nvisa Type 1>,\nIsracard Type 2>");
-					newPaymentMethod.setCcType(ccType);
-		
-					String cardNumber = scannerManager.getStringValueFromUser("cardNumber:");
-					newPaymentMethod.setccNumber(cardNumber);
-		
-					String expDate = scannerManager.getStringValueFromUser("expirationDate : ");
-					newPaymentMethod.setExpirationDate(expDate);
-					
-					newPaymentMethod.setUserId(newUserDetails.getUserId());
-					newPaymentMethod.savePayment();
-					
-					
+									String socialSec = scannerManager.getStringValueFromUser("Socialsec :");
+									newPaymentMethod.setSocialsec(socialSec);
+									String ownerFirstName = scannerManager.getStringValueFromUser("firstName : ");
+									newPaymentMethod.setFirstName(ownerFirstName);
+									String ownerLastName = scannerManager.getStringValueFromUser("lastName : ");
+									newPaymentMethod.setLastName(ownerLastName);
+									String ccType = scannerManager.getStringValueFromUser(" cc Type: \nvisa Type 1>,\nIsracard Type 2>");
+									newPaymentMethod.setCcType(ccType);
+									String cardNumber = scannerManager.getStringValueFromUser("cardNumber:");
+									newPaymentMethod.setccNumber(cardNumber);
+									String expDate = scannerManager.getStringValueFromUser("expirationDate : ");
+									newPaymentMethod.setExpirationDate(expDate);
+									newPaymentMethod.setUserId(userDetails.getUserId());
+									newPaymentMethod.savePayment();
+								
+							}else{
+									gameZone();
+							}
+						}else{
+							gameZone();
+						}
 				}
 			}
 		}
-	
-
-
-
+	}
+		
 	private  void signIn() {
 		String userName = scannerManager.getStringValueFromUser("User Name :");
 		String password = scannerManager.getStringValueFromUser("password (8 char):");
@@ -219,14 +209,7 @@ public class CasinoManager
 		int balance = 100;
 		User.setUserBalance(balance);
 		User.saveUser();
-
-		
-	}
 	
-	
-	public void addPlayerToGame(){
-		//here we can check if there is availble table to join playing
-
 	}
 
 }
