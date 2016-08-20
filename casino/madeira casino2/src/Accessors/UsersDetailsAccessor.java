@@ -41,9 +41,8 @@ public class UsersDetailsAccessor {
 							+ userDetails.getStreet()+ "'" + "," +"'"
 							+ userDetails.getCountry()+ "'" +"," +"'"
 							+ userDetails.getPhoneNumber()+ "'" +"," 
-							+  ","
 							+ "now()" + "," +"'"
-							+ userDetails.getCity()+"');");
+							+ userDetails.getCityId()+"');");
 					preparedStatement.executeUpdate();
 					//writeResultSet(resultSet);		
 				} 
@@ -151,7 +150,7 @@ public class UsersDetailsAccessor {
 
 				}
 			
-			 public int getCityID(UsersDetails cityId){
+			 public int getCityIdFromDb(UsersDetails cityId){
 					
 					int Id = 0;
 						

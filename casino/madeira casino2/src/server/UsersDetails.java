@@ -21,8 +21,12 @@ public class  UsersDetails
 	
 
 
-	public void setCityID(int cityID) {
+	public void setCityId(int cityID) {
 		this.cityID = cityID;
+	}
+	
+	public int getCityId(){
+		return cityID;
 	}
 	public int getUserId() {
 		return userId;
@@ -124,11 +128,11 @@ public class  UsersDetails
 		  
 	  }
 	  
-	  public boolean getCityID(){
+	  public boolean getCityIdAsFK(){
 		  UsersDetailsAccessor Accessor = new UsersDetailsAccessor();
-		  int cityID = Accessor.getCityID(this);
+		  int cityID = Accessor.getCityIdFromDb(this);
 		  if (cityID != 0){
-			  setCityID(cityID);
+			  setCityId(cityID);
 			  return true;
 		  }
 		  else{

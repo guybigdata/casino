@@ -134,7 +134,7 @@ public class CasinoManager
 						userDetails.setStreet(street+ " "+ streetNumber);
 						String city = scannerManager.getStringValueFromUser("City :");
 						userDetails.setCity(city);
-						boolean isCityIdExists = userDetails.getCityID();
+						boolean isCityIdExists = userDetails.getCityIdAsFK();
 						if (isCityIdExists == true){
 						
 								String country = scannerManager.getStringValueFromUser("Country :");
