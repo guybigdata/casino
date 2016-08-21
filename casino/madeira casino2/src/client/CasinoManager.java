@@ -6,6 +6,7 @@ import server.UsersDetails;
 import server.Users;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.Calendar;
 
 import server.PaymentDetails;
@@ -17,12 +18,17 @@ public class CasinoManager
 	int userSelection;  
 	private Users user ;   
 	private ScannerManager scannerManager;
-	private String gameType;
+
+	public PaymentDetails paymentMethod;
+	public TransactionHistory Transaction;
+	private int chipsAmount;
 	
 	public CasinoManager()    
 	{
 		user = new Users();   //member of game manager class for the ability to get the user id for all the class
 		scannerManager = new ScannerManager();
+		paymentMethod = new PaymentDetails();
+		Transaction = new TransactionHistory();
 	}
 	
 	public void Start()
@@ -42,14 +48,7 @@ public class CasinoManager
 				signUp(); // need to check if user already exists
 				System.out.println("Enter your new login details: ");
 				signIn();
-				
-				TransactionHistory Transaction = new TransactionHistory();
-				Transaction.setTransactionAmount(user.getUserBalance()); //we can create trigger to set value to 100 when insert newuser
-				Transaction.setUserID(user.getUserId());
-				Transaction.setTransactionType(Transaction.TransactionTypeList[0]);
-				Transaction.setActionType(Transaction.actionTypeList[0]);
-				Transaction.setChipsQuantity(Transaction.chipsQuantityList[5]);
-				Transaction.saveTransaction();
+				savePurchaseTransaction();
 				
 				gameZone();
 			}	
@@ -100,19 +99,25 @@ public class CasinoManager
 			if (mainMenu == 2){ //if the user want to buy chips before playing first time
 				//need to update balance
 			
-				TransactionHistory Transaction = new TransactionHistory();
-				Transaction.setUserID(user.getUserId());
+				//TransactionHistory Transaction = new TransactionHistory();
+				//Transaction.setUserID(user.getUserId());
 				boolean numOfUserId = Transaction.ifPaymentDetailsExists();
 				
 				if (numOfUserId == true){
-					int chipsAmount = scannerManager.getIntValueFromUser("Welcome to the cash desk,"
-							+ " Enter how much chips you wish to purchase  (please Enter 10,20,30,40 or 50)?"); 
-					String confirmCharge = scannerManager.getStringValueFromUser("Your account will"
+					chipsAmount = scannerManager.getIntValueFromUser("Welcome to the"
+							+ " cash desk,"
+							+ " Enter how much chips you wish to purchase  (please Enter"
+							+ " 10,20,30,40,50,100,500 or 1000)?"); 
+					String confirmCharge = scannerManager.getStringValueFromUser("Your"
+							+ " account will"
 							+ " charge in amount of " + chipsAmount + " dollar. "
 									+ "are yoy confirm (yes/no)");
 					if (confirmCharge.equals("yes")){
 						System.out.print("In progress...");
 						System.out.print(".");System.out.print(".");System.out.print(".");System.out.print(".");System.out.print(".");System.out.print(".");System.out.print(".");System.out.print(".");System.out.print(".");
+						System.out.println("your balance id updated");
+						savePurchaseTransaction();
+						gameZone();
 					}else{
 							mainMenu = 2;
 						}
@@ -153,22 +158,28 @@ public class CasinoManager
 									userDetails.setuserId(user.getUserId());
 									userDetails.save();
 									
-									PaymentDetails newPaymentMethod = new PaymentDetails();
+									
 				
 									String socialSec = scannerManager.getStringValueFromUser("Socialsec :");
-									newPaymentMethod.setSocialsec(socialSec);
+									paymentMethod.setSocialsec(socialSec);
 									String ownerFirstName = scannerManager.getStringValueFromUser("firstName : ");
-									newPaymentMethod.setFirstName(ownerFirstName);
+									paymentMethod.setFirstName(ownerFirstName);
 									String ownerLastName = scannerManager.getStringValueFromUser("lastName : ");
-									newPaymentMethod.setLastName(ownerLastName);
-									String ccType = scannerManager.getStringValueFromUser(" cc Type: \nvisa Type 1>,\nIsracard Type 2>");
-									newPaymentMethod.setCcType(ccType);
-									String cardNumber = scannerManager.getStringValueFromUser("cardNumber:");
-									newPaymentMethod.setccNumber(cardNumber);
-									String expDate = scannerManager.getStringValueFromUser("expirationDate : ");
-									newPaymentMethod.setExpirationDate(expDate);
-									newPaymentMethod.setUserId(userDetails.getUserId());
-									newPaymentMethod.savePayment();
+									paymentMethod.setLastName(ownerLastName);
+									String ccType = scannerManager.getStringValueFromUser(" cc Type: \nFor Visa Type 1>,\nFor Isracard Type 2>");
+									paymentMethod.setCcType(ccType);
+									validateCcNumber();
+									
+									System.out.println("expirationDate : ");
+									String expyear = scannerManager.getStringValueFromUser("Expiration Year 'YY':");
+									String expmonth = scannerManager.getStringValueFromUser("Expiration Month 'MM':");
+									String expDate = expyear + "-" + expmonth;
+									paymentMethod.setExpirationDate(expDate);
+									
+									paymentMethod.setUserId(user.getUserId());
+									
+									paymentMethod.savePayment();
+									
 								
 							}else{
 									gameZone();
@@ -207,9 +218,31 @@ public class CasinoManager
 		User.setPassword(password);
 		User.setUserName(userName);
 		int balance = 100;
+		Transaction.setTransactionAmount(balance);
 		User.setUserBalance(balance);
 		User.saveUser();
 	
 	}
+	public void validateCcNumber(){
+		String cardNumber = scannerManager.getStringValueFromUser("Card Number: ");
+		boolean ccnumber = paymentMethod.setccNumber(cardNumber);
+	
+		while (ccnumber == false){
+			validateCcNumber();
+		}
+	}
+	
+	private void savePurchaseTransaction(){
+		
+	Transaction.setTransactionAmount(chipsAmount); //we can create trigger to set value to 100 when insert newuser
+	Transaction.setUserID(user.getUserId());
+	Transaction.setTransactionType(Transaction.TransactionTypeList[0]);
+	Transaction.setActionType(Transaction.actionTypeList[0]);
+	if (Arrays.asList(Transaction.chipsQuantityList).contains(chipsAmount))
+		Transaction.setChipsQuantity(chipsAmount);
+		user.setUserBalance(user.getUserBalance()+ chipsAmount);
+		user.updateUserBalance();
+		Transaction.saveTransaction();
 
+	}
 }

@@ -8,9 +8,9 @@ public class PaymentDetails
 	private String firstName;
 	private String lastName;
 	private String ccType;
-	private String cardNumber ;
 	private String expirationDate;
 	private int userId ;
+	private String ccNumber;
 		
 	
 	public int getUserId() {
@@ -61,27 +61,33 @@ public class PaymentDetails
 	public void setSocialsec(String socialsec) {
 		this.socialSec = socialsec;
 	}
-
-	public void setccNumber(String cardnumber){
-		
-		if (cardnumber.length()< 17)
-		{
-			this.cardNumber = cardnumber;
-		}
-		else
-		{
-			System.out.println(" Wrong number of char, please enter 8 numbers: ");
-		}		
-	}
 	
 	public String getccNumber(){
-		return this.cardNumber;
+		return this.ccNumber;
 	}
+
+	public boolean setccNumber(String cardnumber){
+		
+			if (cardnumber.length()< 17)
+			{
+				this.ccNumber = cardnumber;
+				return true;
+			
+			}else{
+			
+				System.out.println(" Wrong number of char, please enter 8 numbers: ");
+				
+			}
+		
+		return false;			
+	}
+	
+
 	
 		
 	public void savePayment(){
-		PaymentDetailsAccessor newPaymentMethodAccessor = new PaymentDetailsAccessor();
-		newPaymentMethodAccessor.savePayment(this);
+		PaymentDetailsAccessor PaymentAccessor = new PaymentDetailsAccessor();
+		PaymentAccessor.savePayment(this);
 		
 	}
 	

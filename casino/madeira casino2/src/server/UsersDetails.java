@@ -109,13 +109,6 @@ public class  UsersDetails
 		saveToDb.saveDetails(this);
 	}
 	
-//	  public Calendar calendarFor(int year, int month, int day) {
-//	        Calendar cal = Calendar.getInstance();
-//	        cal.set(Calendar.YEAR, year);
-//	        cal.set(Calendar.MONTH, month);
-//	        cal.set(Calendar.DAY_OF_MONTH, day);
-//	        return cal;
-//	    }
 	  public boolean getCountryID(){
 		  UsersDetailsAccessor Accessor = new UsersDetailsAccessor();
 		  String countryCode = Accessor.getCountryId(this);
