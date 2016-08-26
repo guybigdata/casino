@@ -1,21 +1,16 @@
 package client;
-
 import server.TransactionHistory;
 import server.ScannerManager;
 import server.UsersDetails;
 import server.Users;
-
 import java.time.LocalDate;
 import java.util.Arrays;
-import java.util.Calendar;
-
+//import java.util.Calendar;
 import server.PaymentDetails;
 import server.RouletaTable;
 
-
 public class CasinoManager 
 {
-	//int userSelection;  
 	private Users user ;   
 	private ScannerManager scannerManager;
 	public PaymentDetails paymentMethod;
@@ -25,7 +20,7 @@ public class CasinoManager
 	
 	public CasinoManager()    
 	{
-		user = new Users();   //member of game manager class for the ability to get the user id for all the class
+		user = new Users();   
 		scannerManager = new ScannerManager();
 		paymentMethod = new PaymentDetails();
 		Transaction = new TransactionHistory();
@@ -46,7 +41,7 @@ public class CasinoManager
 			
 			case 2: 
 
-				signUp(); // need to check if user already exists
+				signUp(); 
 				System.out.println("Enter your new login details: ");
 				signIn();
 				savePurchaseTransaction();
@@ -279,15 +274,15 @@ public class CasinoManager
 	
 	private void savePurchaseTransaction(){
 		
-	Transaction.setTransactionAmount(chipsAmount); //we can create trigger to set value to 100 when insert newuser
-	Transaction.setUserID(user.getUserId());
-	Transaction.setTransactionType(Transaction.TransactionTypeList[0]);
-	Transaction.setActionType(Transaction.actionTypeList[0]);
-	if (Arrays.asList(Transaction.chipsQuantityList).contains(chipsAmount))
-		Transaction.setChipsQuantity(chipsAmount);
-		user.setUserBalance(user.getUserBalance()+ chipsAmount);
-		user.updateUserBalance();
-		Transaction.saveTransaction();
+		Transaction.setTransactionAmount(chipsAmount); //we can create trigger to set value to 100 when insert newuser
+		Transaction.setUserID(user.getUserId());
+		Transaction.setTransactionType(Transaction.TransactionTypeList[0]);
+		Transaction.setActionType(Transaction.actionTypeList[0]);
+		if (Arrays.asList(Transaction.chipsQuantityList).contains(chipsAmount))
+			Transaction.setChipsQuantity(chipsAmount);
+			user.setUserBalance(user.getUserBalance()+ chipsAmount);
+			user.updateUserBalance();
+			Transaction.saveTransaction();
 
 	}
 }

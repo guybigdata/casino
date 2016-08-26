@@ -1,14 +1,13 @@
 package server;
 
 import Accessors.GameTransactionEccessor;
-import jdk.nashorn.internal.ir.ContinueNode;
+
 
 public class RouletaTable {
 	
 	private int playerId;
 	private int gambleAmount;     
 	private String gameResault;   //win or lose
-	//private String colorGamble ;
 	private int gambelNumber;
 	private int Amount;
 	private int winningNumber;
@@ -90,7 +89,8 @@ public class RouletaTable {
 
 	public void startGame(){
 		
-		int menu = scanner.getIntValueFromUser("To gamble Enter 1>\nTo go back to 'GAME ZONE' enter 2> ");
+		int menu = scanner.getIntValueFromUser("To gamble Enter 1>\nTo go back to "
+				+ "'GAME ZONE' enter 2> ");
 		while (menu !=3){
 			if (menu == 1){
 				gambleProcces();
@@ -110,8 +110,8 @@ public class RouletaTable {
 		Boolean ifBalanceExists = validateBalance(gambleAmount);
 		if (ifBalanceExists == false){
 			startGame();
-		}
-		else{
+		
+		}else{
 			
 			setGambleAmount(gambleAmount);
 	 		String gambleType = scanner.getStringValueFromUser("Enter n to gamble on number or o for color?");//later we can add or color or range etc..
@@ -125,17 +125,14 @@ public class RouletaTable {
 				int winingNumber = rouletaWheel.lotteryNumber();
 				setWiningNumber(winingNumber);
 				endRound();
-			}
-			else{
+			
+			}else{
 					System.out.println("Color Will coming soon");
 					gambleType = "n";
 					gambleProcces();
 			}
-			
 		}
 	}
-	
-
 
 	private void endRound(){	
 			if (this.winningNumber == this.gambelNumber){
@@ -147,10 +144,8 @@ public class RouletaTable {
 				setBalance(balance + winningPrise);
 				gameTransactionEccessor.saveTranHistory(this);
 				startGame();
-				
-			}
-		
-	    	else{
+			
+			}else{
 	    		System.out.println("The winning number is " + this.winningNumber + " your loss is "
 	    				+ gambleAmount + " dollar");
 	    		setAmount(gambleAmount);
@@ -160,10 +155,7 @@ public class RouletaTable {
 	    		
 				gameTransactionEccessor.saveTranHistory(this);
 	    		startGame();
-				
-
 			}
-			
 		}
 	
 	private boolean validateBalance(int gambleAmount) {
@@ -174,10 +166,7 @@ public class RouletaTable {
 		else{
 			return true;
 		}
-		
-		
 	}
-	
 		
 	private void printRowllingNumbers(){
 			try {

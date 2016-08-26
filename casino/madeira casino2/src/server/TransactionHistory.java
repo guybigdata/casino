@@ -1,9 +1,5 @@
 package server;
-
-import java.util.Random;
-
 import Accessors.TransactionAccessor;
-
 
 public class TransactionHistory {
 	
@@ -52,7 +48,6 @@ public class TransactionHistory {
 		UserID = userID;
 	}
 	
-
 	public void saveTransaction()
 	{
 		

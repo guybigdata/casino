@@ -6,7 +6,6 @@ public class ScannerManager {
 
 	private Scanner scanner;
 	
-	
 	public String getStringValueFromUser(String printToUser){
 		scanner = new Scanner(System.in);
 		System.out.println(printToUser);

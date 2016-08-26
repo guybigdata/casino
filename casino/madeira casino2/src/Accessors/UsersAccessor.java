@@ -1,7 +1,5 @@
 package Accessors;
-
 import java.sql.*;
-
 import server.Users;
 
 public class UsersAccessor {
@@ -22,16 +20,12 @@ public class UsersAccessor {
 
 			preparedStatement = connect.prepareStatement("INSERT INTO casino.Users VALUES (default, ?, ?,?)");
 
-			// Parameters start with 1
+			
 			preparedStatement.setString(1, user.getUserName());
 			preparedStatement.setString(2, user.getPassword());
 			preparedStatement.setInt(3,user.getUserBalance());
 			preparedStatement.executeUpdate();
 			
-			
-			//preparedStatement = connect.prepareStatement("SELECT UserId FROM casino.Users_Log");
-			//resultSet = preparedStatement.executeQuery();
-		
 		}
 
 		catch (SQLException e) {
@@ -71,16 +65,14 @@ public class UsersAccessor {
 
 			
 			Class.forName("com.mysql.jdbc.Driver");
-
 			connect = DriverManager.getConnection(connectionStringMysql.getMysqlConnection());
 
 			preparedStatement = connect.prepareStatement("SELECT UserId, Balance FROM casino.Users WHERE UserName = '"
 					+ existsUser.getUserName() + "' AND Password =" + "'" 
 					+ existsUser.getPassword() + "'");
-// return the balance and set the member than update the member during the game and save it to database
+
 			resultSet = preparedStatement.executeQuery();
 			
-
 			if (resultSet != null)
 			{
 				resultSet.next();
@@ -88,8 +80,6 @@ public class UsersAccessor {
 				balance = resultSet.getInt("Balance");
 				
 			}
-
-			
 		}
 
 		catch (SQLException e) {
@@ -98,7 +88,7 @@ public class UsersAccessor {
 		catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			// Close the connections after the data has been handled.
+			
 			if (preparedStatement != null)
 				try {
 					preparedStatement.close();
@@ -131,7 +121,6 @@ public class UsersAccessor {
 			try {
 
 				Class.forName("com.mysql.jdbc.Driver");
-
 				connect = DriverManager
 					.getConnection(connectionStringMysql.getMysqlConnection());
 
@@ -139,9 +128,7 @@ public class UsersAccessor {
 						+ " WHERE UserId = "+ userBalance.getUserId());
 	
 				preparedStatement.setInt(1,userBalance.getUserBalance());
-				//preparedStatement.setInt(2,userBalance.getUserId());
 				preparedStatement.executeUpdate();
-			
 			}
 
 			catch (SQLException e) {
@@ -153,9 +140,6 @@ public class UsersAccessor {
 			} finally {
 					close();
 			}
-	
 	}
-	
-	
 }
 	

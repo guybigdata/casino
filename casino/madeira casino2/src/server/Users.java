@@ -3,6 +3,7 @@ package server;
 import Accessors.UsersAccessor;
 
 public class Users {
+	
 	private int userBalance;
 	
 	public int getUserBalance() {

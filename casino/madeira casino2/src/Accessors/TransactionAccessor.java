@@ -49,8 +49,6 @@ public class TransactionAccessor {
 			try {
 				
 				Class.forName("com.mysql.jdbc.Driver");
-
-			
 				connect = DriverManager
 						.getConnection(connectionStringMysql.getMysqlConnection());
 
@@ -150,15 +148,13 @@ public class TransactionAccessor {
 				setChipsQuantityId(8);
 			}
 		}
-		// when user want to pay first time check if he have payment details already
+		
 		public int searchPaymentDetails(TransactionHistory userId){
 			int count = 0;
 					
 			try {
 
-				
 				Class.forName("com.mysql.jdbc.Driver");
-
 				connect = DriverManager.getConnection(connectionStringMysql.getMysqlConnection());
 
 				preparedStatement = connect.prepareStatement("SELECT COUNT(*) FROM casino.CreditCards WHERE UserId =" + userId.getUserID()+" ");
@@ -171,8 +167,6 @@ public class TransactionAccessor {
 					count = resultSet.getInt("COUNT(*)");
 					
 				}
-
-				
 			}
 
 			catch (SQLException e) {
@@ -203,9 +197,7 @@ public class TransactionAccessor {
 					} catch (Exception e) {
 					}
 			}
-			
 			return count;
-
 		}
 
 		public int[] getUserPurchase(TransactionHistory transaction) {
@@ -213,10 +205,8 @@ public class TransactionAccessor {
 			 int chipsQuantity = 0;
 			
 			try {
-
 				
 				Class.forName("com.mysql.jdbc.Driver");
-
 				connect = DriverManager.getConnection(connectionStringMysql.getMysqlConnection());
 
 				preparedStatement = connect.prepareStatement("SELECT TransactionAmount ,"
@@ -227,15 +217,11 @@ public class TransactionAccessor {
 
 				resultSet = preparedStatement.executeQuery();
 		
-				if (resultSet != null)
-				{
+				if (resultSet != null){
 					resultSet.next();
 					amount = resultSet.getInt("TransactionAmount");
 					chipsQuantity = resultSet.getInt("ChipsQuantity");
-					
 				}
-
-				
 			}
 
 			catch (SQLException e) {
@@ -272,9 +258,7 @@ public class TransactionAccessor {
 			purchaseResault[1] = chipsQuantity;
 			return purchaseResault;
 
-			
 		}
-		
 }
 
 

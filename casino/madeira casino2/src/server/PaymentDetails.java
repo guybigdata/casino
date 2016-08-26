@@ -1,9 +1,8 @@
 package server;
 import Accessors.PaymentDetailsAccessor;
 
+public class PaymentDetails{
 
-public class PaymentDetails
-{
 	private String socialSec;
 	private String firstName;
 	private String lastName;
@@ -36,7 +35,6 @@ public class PaymentDetails
 	public void setCcType(String ccType) {
 		this.ccType = ccType;
 	}
-
 
 	public String getLastName() {
 		return lastName;
@@ -72,23 +70,15 @@ public class PaymentDetails
 			{
 				this.ccNumber = cardnumber;
 				return true;
-			
 			}else{
-			
 				System.out.println(" Wrong number of char, please enter 8 numbers: ");
-				
 			}
-		
 		return false;			
 	}
 	
-
-	
-		
 	public void savePayment(){
 		PaymentDetailsAccessor PaymentAccessor = new PaymentDetailsAccessor();
 		PaymentAccessor.savePayment(this);
 		
 	}
-	
 }	

@@ -5,9 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
-import server.ScannerManager;
-import server.Users;
 import server.UsersDetails;
 
 public class UsersDetailsAccessor {
@@ -23,13 +20,9 @@ public class UsersDetailsAccessor {
 
 				try
 				{
-					// load the MySQL driver, each DB has its own driver
 					Class.forName("com.mysql.jdbc.Driver");
-
-					// Setup the connection with DB
 					connect = DriverManager.getConnection(connectionStringMysql.getMysqlConnection());
 
-					 
 					preparedStatement = connect.prepareStatement("INSERT INTO casino.UserDetails "
 							+ "VALUES ("+userDetails.getUserId() + ",'"
 							+ userDetails.getFirstName()+"'" + "," +"'" 
@@ -44,17 +37,14 @@ public class UsersDetailsAccessor {
 							+ "now()" + "," +"'"
 							+ userDetails.getCityId()+"');");
 					preparedStatement.executeUpdate();
-					//writeResultSet(resultSet);		
+							
 				} 
 
 				catch(SQLException e)
 				{
 					System.out.println(e.getMessage());
 				}
-				/*catch(ClassNotFoundException e)
-				{
-					System.out.println(e.getMessage());
-				}*/
+			
 				catch (Exception e)
 				{
 					System.out.println(e.getMessage());
@@ -94,10 +84,8 @@ public class UsersDetailsAccessor {
 				String id = null;
 					
 				try {
-
-						
+	
 						Class.forName("com.mysql.jdbc.Driver");
-
 						connect = DriverManager.getConnection(connectionStringMysql.getMysqlConnection());
 
 						preparedStatement = connect.prepareStatement("SELECT code FROM casino.countries WHERE name_en = '"
@@ -105,16 +93,12 @@ public class UsersDetailsAccessor {
 			
 						resultSet = preparedStatement.executeQuery();
 						
-
 						if (resultSet != null)
 						{
 							resultSet.next();
 							id = resultSet.getString("code");
 							return id;
-							
 						}
-
-						
 					}
 
 				catch (SQLException e) {
@@ -150,66 +134,58 @@ public class UsersDetailsAccessor {
 
 				}
 			
-			 public int getCityIdFromDb(UsersDetails cityId){
-					
-					int Id = 0;
-						
-					try {
-
-							
-							Class.forName("com.mysql.jdbc.Driver");
-
-							connect = DriverManager.getConnection(connectionStringMysql.getMysqlConnection());
-
-							preparedStatement = connect.prepareStatement("SELECT CityID FROM casino.City WHERE City = '"
-									+ cityId.getCity() + "'");
+	 public int getCityIdFromDb(UsersDetails cityId){
+			int Id = 0;
 				
-							resultSet = preparedStatement.executeQuery();
-							
+			try {
+					Class.forName("com.mysql.jdbc.Driver");
+					connect = DriverManager.getConnection(connectionStringMysql.getMysqlConnection());
 
-							if (resultSet != null)
-							{
-								resultSet.next();
-								Id = resultSet.getInt("CityID");
-								return Id;
-								
-							}
+					preparedStatement = connect.prepareStatement("SELECT CityID FROM casino.City WHERE City = '"
+							+ cityId.getCity() + "'");
+		
+					resultSet = preparedStatement.executeQuery();
+					
 
-							
-						}
-
-					catch (SQLException e) {
-							e.printStackTrace();
-						}
-					catch (Exception e) {
-							e.printStackTrace();
-					} finally {
+					if (resultSet != null)
+					{
+						resultSet.next();
+						Id = resultSet.getInt("CityID");
+						return Id;
 						
-							if (preparedStatement != null)
-								try {
-									preparedStatement.close();
-								} catch (Exception e) {
-								}
-							if (resultSet != null)
-								try {
-									resultSet.close();
-								} catch (Exception e) {
-								}
-							if (statement != null)
-								try {
-									statement.close();
-								} catch (Exception e) {
-								}
-							if (connect != null)
-								try {
-									connect.close();
-								} catch (Exception e) {
-								}
+					}
+				}
+
+			catch (SQLException e) {
+					e.printStackTrace();
+				}
+			catch (Exception e) {
+					e.printStackTrace();
+			} finally {
+				
+					if (preparedStatement != null)
+						try {
+							preparedStatement.close();
+						} catch (Exception e) {
 						}
-						
-					return Id;
-				 
-			 }
+					if (resultSet != null)
+						try {
+							resultSet.close();
+						} catch (Exception e) {
+						}
+					if (statement != null)
+						try {
+							statement.close();
+						} catch (Exception e) {
+						}
+					if (connect != null)
+						try {
+							connect.close();
+						} catch (Exception e) {
+						}
+				}
+			return Id;
+	 }
 }
 
 	
