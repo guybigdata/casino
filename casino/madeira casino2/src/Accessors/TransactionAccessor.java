@@ -207,6 +207,73 @@ public class TransactionAccessor {
 			return count;
 
 		}
+
+		public int[] getUserPurchase(TransactionHistory transaction) {
+			 int amount = 0;
+			 int chipsQuantity = 0;
+			
+			try {
+
+				
+				Class.forName("com.mysql.jdbc.Driver");
+
+				connect = DriverManager.getConnection(connectionStringMysql.getMysqlConnection());
+
+				preparedStatement = connect.prepareStatement("SELECT TransactionAmount ,"
+						+ "ChipsQuantity FROM "
+						+ "casino.TransactionHistory WHERE UserID = " + transaction.getUserID() 
+						+ " AND TransactionType =  1"
+						+ " AND ActionType = 1");
+
+				resultSet = preparedStatement.executeQuery();
+		
+				if (resultSet != null)
+				{
+					resultSet.next();
+					amount = resultSet.getInt("TransactionAmount");
+					chipsQuantity = resultSet.getInt("ChipsQuantity");
+					
+				}
+
+				
+			}
+
+			catch (SQLException e) {
+				e.printStackTrace();
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				
+				if (preparedStatement != null)
+					try {
+						preparedStatement.close();
+					} catch (Exception e) {
+					}
+				if (resultSet != null)
+					try {
+						resultSet.close();
+					} catch (Exception e) {
+					}
+				if (statement != null)
+					try {
+						statement.close();
+					} catch (Exception e) {
+					}
+				if (connect != null)
+					try {
+						connect.close();
+					} catch (Exception e) {
+					}
+			}
+			
+			int [] purchaseResault = new int[2];
+			purchaseResault[0] = amount;
+			purchaseResault[1] = chipsQuantity;
+			return purchaseResault;
+
+			
+		}
 		
 }
 

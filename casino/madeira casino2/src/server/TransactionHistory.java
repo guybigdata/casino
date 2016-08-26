@@ -1,12 +1,14 @@
 package server;
 
+import java.util.Random;
+
 import Accessors.TransactionAccessor;
 
 
 public class TransactionHistory {
 	
-	public String[] TransactionTypeList = new String[]{"Payment","Cashout", "Gift"};
-	public String[] actionTypeList = new String[]{"PurchaseChips","ReturnChips"};
+	public String[] TransactionTypeList = new String[]{"payment","cashout", "gift"};
+	public String[] actionTypeList = new String[]{"ChipsPurchase","ChipsReturns"};
 	public int[] chipsQuantityList = new int[]{10,20,30,40,50,100,500,1000};
 	
 	TransactionAccessor TransactionAccessor = new TransactionAccessor();
@@ -36,9 +38,6 @@ public class TransactionHistory {
 		TransactionType = transactionType;
 	}
 
-
-
-	
 	public int getTransactionAmount() {
 		return transactionAmount;
 	}
@@ -75,6 +74,17 @@ public class TransactionHistory {
 		TransactionAccessor.saveTransaction(this);
 		
 	}
+	public int[] getUserPurchase() {
 	
-
+		int[] purchaseDetails; 
+		purchaseDetails = TransactionAccessor.getUserPurchase(this);
+		int n = purchaseDetails[1];
+		int t = chipsQuantityList[n-1];
+		int[] purchaseReport = new int [2];
+		purchaseReport[0] = purchaseDetails[0];
+		purchaseReport[1] = t;
+		return purchaseReport;
+					
+		}
+		
 }

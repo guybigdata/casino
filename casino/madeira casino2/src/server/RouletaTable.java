@@ -16,6 +16,12 @@ public class RouletaTable {
 	private ScannerManager scanner;
 	private int balance;
 	private String gametype;
+	private GameTransactionEccessor gameTransactionEccessor;
+	
+	public RouletaTable(){
+		 gameTransactionEccessor = new GameTransactionEccessor();
+		 scanner = new ScannerManager();
+	}
 	
 	public String getGametype() {
 		return gametype;
@@ -33,10 +39,6 @@ public class RouletaTable {
 		this.balance = balance;
 	}
 
-	public RouletaTable(){
-		 scanner = new ScannerManager();
-	}
-	
 	public String getGambleOption() {
 		return GambleOption;
 	}
@@ -119,8 +121,8 @@ public class RouletaTable {
 				int gambleNumber = scanner.getIntValueFromUser("pick a number between 1-36?");
 				setGamblNumber(gambleNumber);
 				printRowllingNumbers();
-				RouletaWheel rouletaWhee = new RouletaWheel();
-				int winingNumber = rouletaWhee.lotteryNumber();
+				RouletaWheel rouletaWheel = new RouletaWheel();
+				int winingNumber = rouletaWheel.lotteryNumber();
 				setWiningNumber(winingNumber);
 				endRound();
 			}
@@ -143,7 +145,6 @@ public class RouletaTable {
 				setAmount(winningPrise);
 				System.out.println("You Won!! Congradulation!! your winning amount is " + winningPrise + " dollar. Luky you!");
 				setBalance(balance + winningPrise);
-				GameTransactionEccessor gameTransactionEccessor = new GameTransactionEccessor();
 				gameTransactionEccessor.saveTranHistory(this);
 				startGame();
 				
@@ -156,7 +157,7 @@ public class RouletaTable {
 	    		setBalance(balance - gambleAmount);
 	    		String lose = "lose";
 				setGameResault(lose);
-	    		GameTransactionEccessor gameTransactionEccessor = new GameTransactionEccessor();
+	    		
 				gameTransactionEccessor.saveTranHistory(this);
 	    		startGame();
 				
@@ -279,7 +280,16 @@ public class RouletaTable {
 			} 
 			
 		}
+
+	public int getNumOfWin() {
+		int winNum = gameTransactionEccessor.getNumOfWin(this);
+		return winNum;
+	}
+	
+	public int getLuckyNum(){
+		int luckyNum = gameTransactionEccessor.getLuckyNum(this);
+		return luckyNum;
+	}
 	
 }
 
-// if he lose we need to subtract the gamble amount from the total amount in accountdetails class

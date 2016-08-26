@@ -15,13 +15,13 @@ import server.RouletaTable;
 
 public class CasinoManager 
 {
-	int userSelection;  
+	//int userSelection;  
 	private Users user ;   
 	private ScannerManager scannerManager;
-
 	public PaymentDetails paymentMethod;
 	public TransactionHistory Transaction;
 	private int chipsAmount;
+	RouletaTable rouletaTable; 
 	
 	public CasinoManager()    
 	{
@@ -29,6 +29,7 @@ public class CasinoManager
 		scannerManager = new ScannerManager();
 		paymentMethod = new PaymentDetails();
 		Transaction = new TransactionHistory();
+		rouletaTable = new RouletaTable();
 	}
 	
 	public void Start()
@@ -36,14 +37,14 @@ public class CasinoManager
 		
 		int userSelection = scannerManager.getIntValueFromUser("To signin Enter 1: \nTo Create user and Start to play press 2:\nTo exit enter 3: ");
 		
-		while (userSelection != 4) {
+		switch (userSelection) {
 					
-			if (userSelection == 1) {
+			case 1:
 				signIn(); 
 				gameZone();
-			}
+				break;
 			
-			else if (userSelection == 2) {
+			case 2: 
 
 				signUp(); // need to check if user already exists
 				System.out.println("Enter your new login details: ");
@@ -51,20 +52,20 @@ public class CasinoManager
 				savePurchaseTransaction();
 				
 				gameZone();
-			}	
-		    else if (userSelection == 3){
+				break;
+				
+			case 3: 
 				System.out.println("Hopefully to see you soon, bye bye");
 				System.exit(0); 
-			}
-		    else{
+			
+			default:
 		    	System.out.println("Wrong input, please enter 1,2 or 3");
 				Start();
 		    }
 			
 		}
-		System.out.println("Wrong input, please enter 1,2 or 3");
-		Start();
-	}
+		
+	
 	
 	
 	public void gameZone() {
@@ -74,16 +75,16 @@ public class CasinoManager
 				+ "\nTo buy chips Enter 2:"
 				+ "\nGo to your 'game zone reports' Enter 3 ");
 
-		while (mainMenu != 3) 
+		switch (mainMenu) 
 		{	
-			if (mainMenu == 1)
-			{
+			case 1:
+			
 				String gameType = scannerManager.getStringValueFromUser("Which game would you "
 						+ "like to play? Enter r for rouleta: ");
 				
 				
 				if (gameType.equals("r")){
-					RouletaTable rouletaTable = new RouletaTable();
+					
 					rouletaTable.setGameType(gameType);
 					rouletaTable.setPlayerId(this.user.getUserId());
 					rouletaTable.setBalance(user.getUserBalance());
@@ -95,12 +96,8 @@ public class CasinoManager
 				}else{
 						System.out.println("More games will comming soon, please enter 'r':");
 				}
-			}
-			if (mainMenu == 2){ //if the user want to buy chips before playing first time
-				//need to update balance
 			
-				//TransactionHistory Transaction = new TransactionHistory();
-				//Transaction.setUserID(user.getUserId());
+			case 2:
 				boolean numOfUserId = Transaction.ifPaymentDetailsExists();
 				
 				if (numOfUserId == true){
@@ -188,8 +185,56 @@ public class CasinoManager
 							gameZone();
 						}
 				}
+			case 3:
+				 reports();
+			
+			default:
+				System.out.println("wrong input please enter 1, 2 or 3: ");
+				gameZone();
 			}
+		
+	}
+	
+	public void reports(){
+		System.out.println("Welcometo your account reports!");
+		int userSelection = scannerManager.getIntValueFromUser(""
+				+ "Enter 1 to see your balance : "
+				+ "\nEnter 2 to see your purchase:"
+				+ "\nEnter 3 to see your games details:"
+				+ "\nEnter 4 to return to the gameZone menu: ");
+		
+		while (userSelection != 5){
+			if (userSelection == 1){
+				System.out.println("Current balance : " + user.getUserBalance());
+				reports();
+				
+			}else if (userSelection == 2){
+				Transaction.setUserID(user.getUserId());
+				int [] purchaseReport = Transaction.getUserPurchase();
+				System.out.println("purchase amount :" + purchaseReport[0]);
+				System.out.println("Chips quantity :" + purchaseReport[1]);
+				reports();
+				
+			}else if (userSelection == 3){ 
+				rouletaTable.setPlayerId(user.getUserId());
+				int gameReport = rouletaTable.getNumOfWin();
+				System.out.println("you won " + gameReport + " times: ");
+				int luckyNum = rouletaTable.getLuckyNum();
+				System.out.println("your lucky numbers is: " + luckyNum);
+				System.out.println("your highly winning amount is  ");
+				reports();
+				
+			}else if (userSelection == 4){
+				gameZone();
+				
+			}else{
+				System.out.println("Wrong input, please enter 1,2,3 or 4 ");
+				reports();
+			}	
+					
 		}
+		System.out.println("Wrong input, please enter 1,2 or 3  ");
+		reports();
 	}
 		
 	private  void signIn() {
