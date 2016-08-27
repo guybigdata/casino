@@ -10,7 +10,6 @@ public class PaymentDetailsAccessor {
 	PreparedStatement preparedStatement = null;
 	int count = 0;
 	ConnectionStrings connectionStringMysql = new ConnectionStrings();
-	
 
 	public void savePayment(PaymentDetails paymentMethod) {
 
@@ -23,10 +22,10 @@ public class PaymentDetailsAccessor {
 			preparedStatement.setString(1, paymentMethod.getSocialsec());
 			preparedStatement.setString(2, paymentMethod.getFirstName());
 			preparedStatement.setString(3, paymentMethod.getLastName());
-			preparedStatement.setString(4, paymentMethod.getCcType()); 
+			preparedStatement.setString(4, paymentMethod.getCcType());
 			preparedStatement.setString(5, paymentMethod.getccNumber());
 			preparedStatement.setString(6, paymentMethod.getExpirationDate());
-			preparedStatement.setInt(7, paymentMethod.getUserId()); 
+			preparedStatement.setInt(7, paymentMethod.getUserId());
 
 			preparedStatement.executeUpdate();
 		}

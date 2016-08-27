@@ -18,13 +18,13 @@ public class  UsersDetails
 	private String email;
 	private LocalDate birthDate ;
 	private int cityID;
-	
+	UsersDetailsAccessor Accessor = new UsersDetailsAccessor();
 
 
 	public void setCityId(int cityID) {
 		this.cityID = cityID;
 	}
-	
+
 	public int getCityId(){
 		return cityID;
 	}
@@ -34,7 +34,7 @@ public class  UsersDetails
 	public void setuserId(int userId) {
 		this.userId = userId;
 	}
-	
+
 	public String getLastName() {
 		return lastName;
 	}
@@ -42,7 +42,7 @@ public class  UsersDetails
 		this.lastName = lastName;
 	}
 
-	
+
 	public String getGender() {
 		return gender;
 	}
@@ -50,7 +50,7 @@ public class  UsersDetails
 		this.gender = gender;
 	}
 
-	
+
 	public String getPhoneNumber() {
 		return phoneNumber;
 	}
@@ -58,16 +58,16 @@ public class  UsersDetails
 		this.phoneNumber = phoneNumber;
 	}
 
-	
+
 	public String getStreet() {
 		return street;
 	}
-	
+
 	public void setStreet(String street){
 		this.street = street;
 	}
 
-	
+
 	public String getCity() {
 		return city;
 	}
@@ -75,7 +75,7 @@ public class  UsersDetails
 		this.city = city;
 	}
 
-	
+
 	public String getCountry() {
 		return country;
 	}
@@ -83,7 +83,7 @@ public class  UsersDetails
 		this.country = country;
 	}
 
-	
+
 	public String getEmail() {
 		return email;
 	}
@@ -103,34 +103,45 @@ public class  UsersDetails
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
 	}
-	
+
 	public void save(){
-		UsersDetailsAccessor saveToDb = new UsersDetailsAccessor();
-		saveToDb.saveDetails(this);
+		//UsersDetailsAccessor saveToDb = new UsersDetailsAccessor();
+		Accessor.saveDetails(this);
 	}
-	
-	  public boolean getCountryID(){
-		  UsersDetailsAccessor Accessor = new UsersDetailsAccessor();
-		  String countryCode = Accessor.getCountryId(this);
-		  if (countryCode != null){
-			  setCountry(countryCode);
-			  return true;
-		  }else{
-			  return false;
-		  }
-		  
-	  }
-	  
-	  public boolean getCityIdAsFK(){
-		  UsersDetailsAccessor Accessor = new UsersDetailsAccessor();
-		  int cityID = Accessor.getCityIdFromDb(this);
-		  if (cityID != 0){
-			  setCityId(cityID);
-			  return true;
-		  }
-		  else{
-			  return false;
-		  }
-		  
-	  }
+
+	public boolean getCountryID(){
+		//UsersDetailsAccessor Accessor = new UsersDetailsAccessor();
+		String countryCode = Accessor.getCountryId(this);
+		if (countryCode != null){
+			setCountry(countryCode);
+			return true;
+		}else{
+			return false;
+		}
+
+	}
+
+	public boolean getCityIdAsFK(){
+		
+		int cityID = Accessor.getCityIdFromDb(this);
+		if (cityID != 0){
+			setCityId(cityID);
+			return true;
+		}
+		else{
+			return false;
+		}
+
+	}
+	public boolean ifPaymentDetailsExists() {
+
+		int IdExists = Accessor.searchPaymentDetails(this);
+
+
+		if (IdExists != 0){
+			return true;
+		}else{
+			return false;
+		}
+	}
 }

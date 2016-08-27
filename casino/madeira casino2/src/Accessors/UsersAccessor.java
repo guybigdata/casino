@@ -1,4 +1,5 @@
 package Accessors;
+
 import java.sql.*;
 import server.Users;
 
@@ -15,17 +16,15 @@ public class UsersAccessor {
 
 			Class.forName("com.mysql.jdbc.Driver");
 
-			connect = DriverManager
-					.getConnection(connectionStringMysql.getMysqlConnection());
+			connect = DriverManager.getConnection(connectionStringMysql.getMysqlConnection());
 
 			preparedStatement = connect.prepareStatement("INSERT INTO casino.Users VALUES (default, ?, ?,?)");
 
-			
 			preparedStatement.setString(1, user.getUserName());
 			preparedStatement.setString(2, user.getPassword());
-			preparedStatement.setInt(3,user.getUserBalance());
+			preparedStatement.setInt(3, user.getUserBalance());
 			preparedStatement.executeUpdate();
-			
+
 		}
 
 		catch (SQLException e) {
@@ -63,32 +62,28 @@ public class UsersAccessor {
 		int balance = 0;
 		try {
 
-			
 			Class.forName("com.mysql.jdbc.Driver");
 			connect = DriverManager.getConnection(connectionStringMysql.getMysqlConnection());
 
 			preparedStatement = connect.prepareStatement("SELECT UserId, Balance FROM casino.Users WHERE UserName = '"
-					+ existsUser.getUserName() + "' AND Password =" + "'" 
-					+ existsUser.getPassword() + "'");
+					+ existsUser.getUserName() + "' AND Password =" + "'" + existsUser.getPassword() + "'");
 
 			resultSet = preparedStatement.executeQuery();
-			
-			if (resultSet != null)
-			{
+
+			if (resultSet != null) {
 				resultSet.next();
 				id = resultSet.getInt("UserId");
 				balance = resultSet.getInt("Balance");
-				
+
 			}
 		}
 
 		catch (SQLException e) {
 			e.printStackTrace();
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			
+
 			if (preparedStatement != null)
 				try {
 					preparedStatement.close();
@@ -110,36 +105,34 @@ public class UsersAccessor {
 				} catch (Exception e) {
 				}
 		}
-		int [] idBalance = new int[2];
+		int[] idBalance = new int[2];
 		idBalance[0] = id;
 		idBalance[1] = balance;
 		return idBalance;
 
 	}
-	
+
 	public void saveBalance(Users userBalance) {
-			try {
+		try {
 
-				Class.forName("com.mysql.jdbc.Driver");
-				connect = DriverManager
-					.getConnection(connectionStringMysql.getMysqlConnection());
+			Class.forName("com.mysql.jdbc.Driver");
+			connect = DriverManager.getConnection(connectionStringMysql.getMysqlConnection());
 
-				preparedStatement = connect.prepareStatement("UPDATE casino.Users SET balance = (?)"
-						+ " WHERE UserId = "+ userBalance.getUserId());
-	
-				preparedStatement.setInt(1,userBalance.getUserBalance());
-				preparedStatement.executeUpdate();
-			}
+			preparedStatement = connect.prepareStatement(
+					"UPDATE casino.Users SET balance = (?)" + " WHERE UserId = " + userBalance.getUserId());
 
-			catch (SQLException e) {
-					System.out.println(e.getMessage());
-			}
+			preparedStatement.setInt(1, userBalance.getUserBalance());
+			preparedStatement.executeUpdate();
+		}
 
-			catch (Exception e) {
-					System.out.println(e.getMessage());
-			} finally {
-					close();
-			}
+		catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+
+		catch (Exception e) {
+			System.out.println(e.getMessage());
+		} finally {
+			close();
+		}
 	}
 }
-	

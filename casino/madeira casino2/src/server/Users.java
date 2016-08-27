@@ -3,9 +3,9 @@ package server;
 import Accessors.UsersAccessor;
 
 public class Users {
-	
+
 	private int userBalance;
-	
+
 	public int getUserBalance() {
 		return userBalance;
 	}
@@ -46,10 +46,10 @@ public class Users {
 
 	public boolean isUserExist() {
 		int[] idBalance;
-		
+
 		UsersAccessor searchUser = new UsersAccessor();
 		idBalance = searchUser.FindUser(this);
-		
+
 		if (idBalance[0] != -1) {
 			setUserId(idBalance[0]);
 			setUserBalance(idBalance[1]);
@@ -64,8 +64,8 @@ public class Users {
 		addNewUser.save(this);
 
 	}
-	
-	public void updateUserBalance(){
+
+	public void updateUserBalance() {
 		UsersAccessor saveBalace = new UsersAccessor();
 		saveBalace.saveBalance(this);
 	}
