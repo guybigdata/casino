@@ -1,5 +1,13 @@
 package server;
 
+import java.util.Iterator;
+
+import org.bson.Document;
+
+import com.mongodb.DBCursor;
+import com.mongodb.DBObject;
+import com.mongodb.client.FindIterable;
+
 import Accessors.GameTransactionEccessor;
 
 
@@ -270,14 +278,21 @@ public class RouletaTable {
 			
 		}
 
-	public int getNumOfWin() {
-		int winNum = gameTransactionEccessor.getNumOfWin(this);
+	public long getNumOfWin() {
+		long winNum = gameTransactionEccessor.getNumOfWin(this);
 		return winNum;
 	}
 	
-	public int getLuckyNum(){
-		int luckyNum = gameTransactionEccessor.getLuckyNum(this);
-		return luckyNum;
+	public void getLuckyNum(){
+		//FindIterable<Document> luckyNum = 
+		gameTransactionEccessor.getLuckyNu(this);
+		//return luckyNum;
+				
+		}
+
+	public Object getHighlyWinAmount() {
+		Object highlyWinAmount = gameTransactionEccessor.getHighlyWinAmount(this);
+		return highlyWinAmount;
 	}
 	
 }

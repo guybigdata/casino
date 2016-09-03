@@ -1,9 +1,7 @@
 package Accessors;
 
 import server.RouletaTable;
-//import com.mongodb.*;
-import org.bson.Document;
-import com.mongodb.client.*;
+
 //import java.net.UnknownHostException;
 //import java.util.ArrayList;
 //import java.util.List;
@@ -20,22 +18,26 @@ import com.mongodb.client.*;
 //import java.text.ParseException;
 //import java.text.ParseException;
 //import java.text.SimpleDateFormat;
-import com.mongodb.BasicDBObject;
-import com.mongodb.DB;
-import com.mongodb.DBCollection;
-import com.mongodb.DBCursor;
-import com.mongodb.DBObject;
-import com.mongodb.MongoClient;
+import com.mongodb.*;
+import org.bson.Document;
+import org.bson.conversions.Bson;
+import com.mongodb.client.*;
+import com.sun.org.apache.bcel.internal.classfile.DescendingVisitor;
+import com.sun.org.apache.xml.internal.dtm.ref.sax2dtm.SAX2DTM2.DescendantIterator;
+
 import java.util.*;
+import static com.mongodb.client.model.Filters.*;
 
 public class GameTransactionEccessor {
 
 	ConnectionStrings mongoConnection = new ConnectionStrings();
 	MongoClient mongoClient = null;
-
+	public int winningNumber;
+	
 	public void saveTranHistory(RouletaTable gameTransaction) {
 
 		try {
+			
 			mongoClient = new MongoClient(mongoConnection.getConnectionString(), mongoConnection.getConnectionInt());
 			MongoDatabase db = mongoClient.getDatabase("gameTransactionHistory");
 
@@ -61,24 +63,24 @@ public class GameTransactionEccessor {
 		}
 	}
 
-	public int getNumOfWin(RouletaTable rouletaTable) {
+	public long getNumOfWin(RouletaTable rouletaTable) {
 
 		try {
 
 			mongoClient = new MongoClient(mongoConnection.getConnectionString(), mongoConnection.getConnectionInt());
-			DB db = mongoClient.getDB("gameTransactionHistory");
-			DBCollection collection = db.getCollection("gameTransaction");
+			MongoDatabase db = mongoClient.getDatabase("gameTransactionHistory");
+			MongoCollection<Document> collection = db.getCollection("gameTransaction");
 
 			BasicDBObject whereQuery = new BasicDBObject();
-			whereQuery.put("gameResault", "lose"); // need to change to "win"
+			whereQuery.put("gameResault", "win"); 
 			whereQuery.put("userID", rouletaTable.getPlayerId());
 
 			BasicDBObject fields = new BasicDBObject();
 			fields.put("_id", 1);
 
-			DBCursor cur = collection.find(whereQuery, fields);
+			long cur = collection.count(whereQuery);
 
-			return cur.count();
+			return cur;
 		} finally {
 			if (mongoClient != null)
 				try {
@@ -88,29 +90,63 @@ public class GameTransactionEccessor {
 		}
 	}
 
-	public int getLuckyNum(RouletaTable rouletaTable) {
+	public void getLuckyNu(RouletaTable rouletaTable) {
+		MongoClient mongoClient = null ;
+
+		try {
+
+			mongoClient = new MongoClient(mongoConnection.getConnectionString(), mongoConnection.getConnectionInt());
+			MongoDatabase db = mongoClient.getDatabase("gameTransactionHistory");
+			MongoCollection<Document> collection = db.getCollection("gameTransaction");
+
+			BasicDBObject whereQuery = new BasicDBObject();
+			whereQuery.put("gameResault", "win"); 
+			whereQuery.put("userID", rouletaTable.getPlayerId());
+
+			BasicDBObject fields = new BasicDBObject();
+			fields.put("winningNumber", 1);
+			//int id = rouletaTable.getPlayerId();
+			FindIterable<Document> iterable = collection.find(whereQuery).sort(new BasicDBObject("winningNumber",1));
+
+			iterable.forEach(new Block<Document>() {
+			            @Override
+			            public void apply(Document document) {
+			                System.out.println(document.get("winningNumber"));
+			            }
+			        });
+			 
+		//return myDoc;
+		} finally {
+			if (mongoClient != null)
+				try {
+					mongoClient.close();
+				} catch (Exception e) {
+				}
+		}
+	}
+
+	public Object getHighlyWinAmount(RouletaTable rouletaTable) {
 		MongoClient mongoClient = null;
 
 		try {
 
 			mongoClient = new MongoClient(mongoConnection.getConnectionString(), mongoConnection.getConnectionInt());
-			DB db = mongoClient.getDB("gameTransactionHistory");
-			DBCollection collection = db.getCollection("gameTransaction");
-
+			MongoDatabase db = mongoClient.getDatabase("gameTransactionHistory");
+			MongoCollection<Document> collection = db.getCollection("gameTransaction");
+			
 			BasicDBObject whereQuery = new BasicDBObject();
 			whereQuery.put("gameResault", "lose"); // need to change to "win"
 			whereQuery.put("userID", rouletaTable.getPlayerId());
 
 			BasicDBObject fields = new BasicDBObject();
-			fields.put("winningNumber", 1);
-
-			DBCursor cur = collection.find(whereQuery, fields);
-
-			DBObject mapObj = cur.next();
-			int winningNumber = ((Number) mapObj.get("winningNumber")).intValue();
-
-			return winningNumber;
-
+			fields.put("amount", 1);
+			BasicDBObject sort = new BasicDBObject();
+			sort.put("amount", -1);
+			
+			Document myDoc = collection.find(exists("amount")).sort(sort).first();
+			Object highlyWinAmount = myDoc.get("amount");
+			return highlyWinAmount;	
+					
 		} finally {
 			if (mongoClient != null)
 				try {
@@ -118,7 +154,5 @@ public class GameTransactionEccessor {
 				} catch (Exception e) {
 				}
 		}
-
 	}
-
 }

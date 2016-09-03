@@ -16,7 +16,7 @@ public class RouletaWheel {
 	private int[] Numbers;
 
 	public int lotteryNumber() {
-		int[] numbers = IntStream.rangeClosed(1, 36).toArray();
+		int[] numbers = IntStream.rangeClosed(2, 3).toArray();
 		int idx = new Random().nextInt(numbers.length);
 		int random = (numbers[idx]);
 		return random;

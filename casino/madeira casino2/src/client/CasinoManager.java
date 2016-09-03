@@ -5,6 +5,13 @@ import server.ScannerManager;
 import server.UsersDetails;
 import server.Users;
 import java.time.LocalDate;
+import java.util.Iterator;
+
+import org.bson.Document;
+
+import com.mongodb.DBCursor;
+import com.mongodb.DBObject;
+import com.mongodb.client.FindIterable;
 
 //import java.util.Calendar;
 import server.PaymentDetails;
@@ -100,43 +107,7 @@ public class CasinoManager {
 
 	}
 
-	public void reports() {
-		System.out.println("Welcometo your account reports!");
-		int userSelection = scannerManager
-				.getIntValueFromUser("" + "\nEnter 1 to see your balance : " + "\nEnter 2 to see your purchase:"
-						+ "\nEnter 3 to see your games details:" + "\nEnter 4 to return to the gameZone menu: ");
 
-		while (userSelection != 5) {
-			if (userSelection == 1) {
-				System.out.println("Current balance : " + user.getUserBalance());
-				reports();
-
-			} else if (userSelection == 2) {
-				Transaction.setUserID(user.getUserId());
-				Transaction.getUserPurchase();
-				reports();
-
-			} else if (userSelection == 3) {
-				rouletaTable.setPlayerId(user.getUserId());
-				int gameReport = rouletaTable.getNumOfWin();
-				System.out.println("you won " + gameReport + " times: ");
-				int luckyNum = rouletaTable.getLuckyNum();
-				System.out.println("your lucky numbers is: " + luckyNum);
-				System.out.println("your highly winning amount is  ");
-				reports();
-
-			} else if (userSelection == 4) {
-				gameZone();
-
-			} else {
-				System.out.println("Wrong input, please enter 1,2,3 or 4 ");
-				reports();
-			}
-
-		}
-		System.out.println("Wrong input, please enter 1,2 or 3  ");
-		reports();
-	}
 
 	private void signIn() {
 		String userName = scannerManager.getStringValueFromUser("User Name :");
@@ -288,5 +259,44 @@ public class CasinoManager {
 		user.updateUserBalance();
 		Transaction.saveTransaction();
 
+	}
+	public void reports() {
+		System.out.println("Welcometo your account reports!");
+		int userSelection = scannerManager
+				.getIntValueFromUser("" + "\nEnter 1 to see your balance : " + "\nEnter 2 to see your purchase:"
+						+ "\nEnter 3 to see your games details:" + "\nEnter 4 to return to the gameZone menu: ");
+
+		while (userSelection != 5) {
+			if (userSelection == 1) {
+				System.out.println("Current balance : " + user.getUserBalance());
+				reports();
+
+			} else if (userSelection == 2) {
+				Transaction.setUserID(user.getUserId());
+				Transaction.getUserPurchase();
+				reports();
+
+			} else if (userSelection == 3) {
+				rouletaTable.setPlayerId(user.getUserId());
+				long gameReport = rouletaTable.getNumOfWin();
+				System.out.println("you won " + gameReport + " times ");
+				//FindIterable<Document> luckyNum = 
+				rouletaTable.getLuckyNum();
+				//System.out.println("your lucky numbers is: " + luckyNum);
+				Object highlyWinAmount = rouletaTable.getHighlyWinAmount();
+				System.out.println("your highly winning amount is  "+ highlyWinAmount);
+				reports();
+
+			} else if (userSelection == 4) {
+				gameZone();
+
+			} else {
+				System.out.println("Wrong input, please enter 1,2,3 or 4 ");
+				reports();
+			}
+
+		}
+		System.out.println("Wrong input, please enter 1,2 or 3  ");
+		reports();
 	}
 }
