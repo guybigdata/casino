@@ -21,4 +21,14 @@ public class RouletaWheel {
 		int random = (numbers[idx]);
 		return random;
 	}
+	
+	public String lotteryColor(){
+		String[] colors = new String[2];
+		colors[0] = "b";
+		colors[1] = "r";
+		int idx = new Random().nextInt(colors.length);
+		String random = (colors[idx]);
+		return random;
+		
+	}
 }

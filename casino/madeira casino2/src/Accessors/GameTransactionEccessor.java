@@ -24,7 +24,11 @@ import org.bson.conversions.Bson;
 import com.mongodb.client.*;
 import com.sun.org.apache.bcel.internal.classfile.DescendingVisitor;
 import com.sun.org.apache.xml.internal.dtm.ref.sax2dtm.SAX2DTM2.DescendantIterator;
+import com.mongodb.Block;
+import com.mongodb.client.AggregateIterable;
+import org.bson.Document;
 
+import static java.util.Arrays.asList;
 import java.util.*;
 import static com.mongodb.client.model.Filters.*;
 
@@ -34,7 +38,7 @@ public class GameTransactionEccessor {
 	MongoClient mongoClient = null;
 	public int winningNumber;
 	
-	public void saveTranHistory(RouletaTable gameTransaction) {
+	public void saveNumberTranHistory(RouletaTable gameTransaction) {
 
 		try {
 			
@@ -53,6 +57,35 @@ public class GameTransactionEccessor {
 							.append("gambleNumber", gameTransaction.getGamblNumber())
 							.append("gameAmount", gameTransaction.getGambleAmount())
 							.append("winningNumber", gameTransaction.getWiningNumber()).append("created at", timeNow));
+
+		} finally {
+			if (mongoClient != null)
+				try {
+					mongoClient.close();
+				} catch (Exception e) {
+				}
+		}
+	}
+	
+	public void saveColorTranHistory(RouletaTable gameTransaction) {
+
+		try {
+			
+			mongoClient = new MongoClient(mongoConnection.getConnectionString(), mongoConnection.getConnectionInt());
+			MongoDatabase db = mongoClient.getDatabase("gameTransactionHistory");
+
+			Date now = new Date();
+			BasicDBObject timeNow = new BasicDBObject("created at", now);
+
+			db.getCollection("gameTransaction")
+					.insertOne(new Document().append("gameType", gameTransaction.getGametype())
+							.append("userID", gameTransaction.getPlayerId())
+							.append("gameResault", gameTransaction.getGameResault())
+							.append("amount", gameTransaction.getAmount())
+							.append("gambleOption", gameTransaction.getGambleOption())
+							.append("gambleColor", gameTransaction.getGambleColor())
+							.append("gameAmount", gameTransaction.getGambleAmount())
+							.append("winningColor", gameTransaction.getWinningColor()).append("created at", timeNow));
 
 		} finally {
 			if (mongoClient != null)
@@ -105,13 +138,14 @@ public class GameTransactionEccessor {
 
 			BasicDBObject fields = new BasicDBObject();
 			fields.put("winningNumber", 1);
-			//int id = rouletaTable.getPlayerId();
+			
 			FindIterable<Document> iterable = collection.find(whereQuery).sort(new BasicDBObject("winningNumber",1));
-
+		
 			iterable.forEach(new Block<Document>() {
 			            @Override
 			            public void apply(Document document) {
 			                System.out.println(document.get("winningNumber"));
+			                
 			            }
 			        });
 			 
