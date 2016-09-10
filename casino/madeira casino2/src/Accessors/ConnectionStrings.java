@@ -3,49 +3,21 @@ package Accessors;
 
 
 public class ConnectionStrings {
-	private String mysqlConnection; 
-	private int ConnectionInt;
-	private String ConnectionString;
+	
+	private final String  mysqlConnection = "jdbc:mysql://52.169.19.139:3306/casino?" + "user=guyhome&password=12qwaszx"; 
+	private final int mongoConnectionPort = 27017;
+	private String mongoConnectionIp = "52.164.245.164";
 
-	ConnectionStrings(){
-
-		mysqlConnection = "jdbc:mysql://52.169.19.139:3306/casino?" + "user=guyhome&password=12qwaszx";
-		//mongo
-		ConnectionString = "52.164.245.164"; //ip
-		ConnectionInt = 27017; //port
-	}
 
 	public String getConnectionString() {
-		return ConnectionString;
+		return mongoConnectionIp;
 	}
-
-
-	public void setConnectionString(String connectionString) {
-		ConnectionString = connectionString;
-	}
-
-
-
-	public int getConnectionInt() {
-		return ConnectionInt;
-	}
-
-	public void setConnectionInt(int connectionInt) {
-		ConnectionInt = connectionInt;
-	}
-
-
-
-
-
 
 	public String getMysqlConnection() {
 		return mysqlConnection;
 	}
-
-	public void setMysqlConnection(String mysqlConnection) {
-		this.mysqlConnection = mysqlConnection;
+	
+	public int getMongoConnectionPort() {
+		return mongoConnectionPort;
 	}
-
-
 }

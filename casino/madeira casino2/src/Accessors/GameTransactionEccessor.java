@@ -42,7 +42,7 @@ public class GameTransactionEccessor {
 
 		try {
 			
-			mongoClient = new MongoClient(mongoConnection.getConnectionString(), mongoConnection.getConnectionInt());
+			mongoClient = new MongoClient(mongoConnection.getConnectionString(), mongoConnection.getMongoConnectionPort());
 			MongoDatabase db = mongoClient.getDatabase("gameTransactionHistory");
 
 			Date now = new Date();
@@ -71,7 +71,7 @@ public class GameTransactionEccessor {
 
 		try {
 			
-			mongoClient = new MongoClient(mongoConnection.getConnectionString(), mongoConnection.getConnectionInt());
+			mongoClient = new MongoClient(mongoConnection.getConnectionString(), mongoConnection.getMongoConnectionPort());
 			MongoDatabase db = mongoClient.getDatabase("gameTransactionHistory");
 
 			Date now = new Date();
@@ -100,7 +100,7 @@ public class GameTransactionEccessor {
 
 		try {
 
-			mongoClient = new MongoClient(mongoConnection.getConnectionString(), mongoConnection.getConnectionInt());
+			mongoClient = new MongoClient(mongoConnection.getConnectionString(), mongoConnection.getMongoConnectionPort());
 			MongoDatabase db = mongoClient.getDatabase("gameTransactionHistory");
 			MongoCollection<Document> collection = db.getCollection("gameTransaction");
 
@@ -128,7 +128,7 @@ public class GameTransactionEccessor {
 
 		try {
 
-			mongoClient = new MongoClient(mongoConnection.getConnectionString(), mongoConnection.getConnectionInt());
+			mongoClient = new MongoClient(mongoConnection.getConnectionString(), mongoConnection.getMongoConnectionPort());
 			MongoDatabase db = mongoClient.getDatabase("gameTransactionHistory");
 			MongoCollection<Document> collection = db.getCollection("gameTransaction");
 
@@ -164,7 +164,7 @@ public class GameTransactionEccessor {
 
 		try {
 
-			mongoClient = new MongoClient(mongoConnection.getConnectionString(), mongoConnection.getConnectionInt());
+			mongoClient = new MongoClient(mongoConnection.getConnectionString(), mongoConnection.getMongoConnectionPort());
 			MongoDatabase db = mongoClient.getDatabase("gameTransactionHistory");
 			MongoCollection<Document> collection = db.getCollection("gameTransaction");
 			

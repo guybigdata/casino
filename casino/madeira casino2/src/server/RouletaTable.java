@@ -10,14 +10,20 @@ public class RouletaTable {
 	private int gambelNumber;
 	private int Amount;
 	private int winningNumber;
-	private String GambleOption;
+	private String GambleOption; // n or c for numbers and colors
 	private ScannerManager scanner;
 	private int balance;
-	private String gametype;
+	private String gametype; //rouleta
 	private GameTransactionEccessor gameTransactionEccessor;
 	private String gambleColor;
 	private String winningColor;
 	RouletaWheel rouletaWheel = new RouletaWheel();
+	
+	
+	public RouletaTable() {
+		gameTransactionEccessor = new GameTransactionEccessor();
+		scanner = new ScannerManager();
+	}
 
 	public String getWinningColor() {
 		return winningColor;
@@ -35,10 +41,7 @@ public class RouletaTable {
 		this.gambleColor = gambleColor;
 	}
 
-	public RouletaTable() {
-		gameTransactionEccessor = new GameTransactionEccessor();
-		scanner = new ScannerManager();
-	}
+
 
 	public String getGametype() {
 		return gametype;
@@ -228,7 +231,8 @@ public class RouletaTable {
 
 	private boolean validateBalance(int gambleAmount) {
 		if (this.balance < gambleAmount) {
-			System.out.println("Sorry but you don't have enaf chips, please go back to 'GAME ZONE' to buy more chips");
+			System.out.println("Sorry but you don't have enough chips, please go back to 'GAME ZONE' to buy more chips"
+					+ "\n********************************************************************************************");
 			return false;
 		} else {
 			return true;

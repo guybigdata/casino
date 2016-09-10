@@ -4,7 +4,9 @@ import java.util.Random;
 import java.util.stream.IntStream;
 
 public class RouletaWheel {
-
+	
+	private int[] Numbers;
+	
 	public int[] getNumbers() {
 		return Numbers;
 	}
@@ -13,8 +15,7 @@ public class RouletaWheel {
 		Numbers = numbers;
 	}
 
-	private int[] Numbers;
-
+	
 	public int lotteryNumber() {
 		int[] numbers = IntStream.rangeClosed(2, 3).toArray();
 		int idx = new Random().nextInt(numbers.length);

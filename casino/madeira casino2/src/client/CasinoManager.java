@@ -20,13 +20,13 @@ import server.RouletaTable;
 public class CasinoManager {
 	private Users user;
 	private ScannerManager scannerManager;
-	public PaymentDetails paymentMethod;
-	public TransactionHistory Transaction;
+	private PaymentDetails paymentMethod;
+	private TransactionHistory Transaction;
 	private int chipsAmount;
 	private RouletaTable rouletaTable;
 	private UsersDetails userDetails;
 
-	public CasinoManager() {
+	CasinoManager() {
 		user = new Users();
 		scannerManager = new ScannerManager();
 		paymentMethod = new PaymentDetails();
@@ -38,7 +38,7 @@ public class CasinoManager {
 	public void Start() {
 
 		int userSelection = scannerManager.getIntValueFromUser(
-				"To signin Enter 1: " + "\nTo Create user and Start to play press 2:\nTo exit enter 3: ");
+				"** Welcome to madeira casino, the best casino in the globe **\n\nTo signin Enter 1: " + "\nTo Create user and Start to play press 2:\nTo exit enter 3: ");
 
 		switch (userSelection) {
 
@@ -53,7 +53,7 @@ public class CasinoManager {
 			System.out.println("Enter your new login details: ");
 			signIn();
 			savePurchaseTransaction();
-			System.out.println("we happy to give you a gift as a new player of 100 chips. \nnow you can start to play");
+			System.out.println("we happy to give you a gift as a new player of 100 chips. \nnow you can start playing");
 			gameZone();
 			break;
 
@@ -70,7 +70,7 @@ public class CasinoManager {
 
 	public void gameZone() {
 
-		System.out.println("welcome to the game zone");
+		System.out.println("$$$ Welcome to the game zone $$$");
 		int mainMenu = scannerManager.getIntValueFromUser("\nTo play Enter 1:" + "\nTo buy chips Enter 2:"
 				+ "\nGo to your 'game zone reports' Enter 3 " + "\nTo exit Enter 4");
 
@@ -99,6 +99,7 @@ public class CasinoManager {
 		case 3:
 			reports();
 		case 4:
+			System.out.println("Hopefully to see you soon, bye bye");
 			System.exit(0);
 		default:
 			System.out.println("\nwrong input please enter 1, 2 or 3: ");
@@ -118,7 +119,7 @@ public class CasinoManager {
 		boolean isUserExist = user.isUserExist();
 
 		if (isUserExist == true) {
-			System.out.println("Successfully signed!");
+			System.out.println("Successfully signed!\n\n");
 		} else {
 			System.out.println("Worng user name or password! please try again or press 2 to sign up ");
 		}
@@ -159,18 +160,74 @@ public class CasinoManager {
 					+ " charge in amount of " + chipsAmount + " dollar. " + "are you confirm (yes/no)");
 			if (confirmCharge.equals("yes")) {
 				System.out.print("In progress...");
+				
+				try {
+					Thread.sleep(100);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				System.out.print("......");
+				try {
+					Thread.sleep(100);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				System.out.print("....");
+				try {
+					Thread.sleep(90);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				System.out.print("...");
+				try {
+					Thread.sleep(80);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				System.out.print("..");
+				try {
+					Thread.sleep(70);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 				System.out.print(".");
+				try {
+					Thread.sleep(60);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 				System.out.print(".");
+				try {
+					Thread.sleep(50);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 				System.out.print(".");
+				try {
+					Thread.sleep(40);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 				System.out.print(".");
-				System.out.print(".");
-				System.out.print(".");
-				System.out.print(".");
-				System.out.print(".");
-				System.out.print(".");
+				try {
+					Thread.sleep(30);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				System.out.print(".\n");
+				try {
+					Thread.sleep(20);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 				savePurchaseTransaction();
-				System.out.println("your balance updated");
-
+				try {
+					Thread.sleep(2000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				System.out.println("\nYour balance Successfully updated and stand for " + user.getUserBalance()+"\n");
+				
 				gameZone();
 			} else {
 				gameZone();
