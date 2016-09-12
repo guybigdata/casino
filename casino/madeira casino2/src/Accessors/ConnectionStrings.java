@@ -4,9 +4,9 @@ package Accessors;
 
 public class ConnectionStrings {
 	
-	private final String  mysqlConnection = "jdbc:mysql://52.169.19.139:3306/casino?" + "user=guyhome&password=12qwaszx"; 
+	private final String  mysqlConnection = "jdbc:mysql://10.1.0.4:3306/casino?" + "user=guyhome&password=12qwaszx"; 
 	private final int mongoConnectionPort = 27017;
-	private String mongoConnectionIp = "52.164.245.164";
+	private String mongoConnectionIp = "10.1.0.5";
 
 
 	public String getConnectionString() {
